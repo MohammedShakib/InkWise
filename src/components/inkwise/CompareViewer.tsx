@@ -92,7 +92,7 @@ export default function CompareViewer() {
   const isRenderingPreview = preview?.key !== currentPreviewKey;
 
   return (
-    <section className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-slate-100/80">
+    <section className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-[#eef2f7]">
       <div className="border-b border-slate-200 bg-white/92 px-5 py-4 backdrop-blur-sm md:px-8">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="min-w-0">
@@ -122,17 +122,19 @@ export default function CompareViewer() {
         </div>
       </div>
 
-      <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden p-4 md:p-8">
-        <div className="mx-auto flex min-h-full max-w-5xl items-start justify-center rounded-[28px] border border-slate-200/80 bg-white p-4 shadow-[0_22px_60px_rgba(15,23,42,0.08)] md:p-8">
-          <Image
-            src={displayUrl}
-            alt={`${selectedImage.name} output preview`}
-            width={selectedImage.width}
-            height={selectedImage.height}
-            unoptimized
-            sizes="(max-width: 768px) 100vw, 70vw"
-            className="h-auto w-full max-w-full rounded-[20px] object-contain shadow-[0_10px_35px_rgba(15,23,42,0.08)]"
-          />
+      <div className="flex min-h-0 flex-1 items-center justify-center overflow-hidden p-6 md:p-10">
+        <div className="flex h-full w-full items-center justify-center rounded-[32px] border border-slate-200/80 bg-[radial-gradient(circle_at_top,#ffffff_0%,#f8fafc_45%,#edf2f7_100%)] p-6">
+          <div className="flex w-full max-w-[420px] items-center justify-center rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_18px_45px_rgba(15,23,42,0.10)] md:max-w-[460px]">
+            <Image
+              src={displayUrl}
+              alt={`${selectedImage.name} output preview`}
+              width={selectedImage.width}
+              height={selectedImage.height}
+              unoptimized
+              sizes="(max-width: 768px) 70vw, 420px"
+              className="h-auto max-h-[calc(100vh-280px)] w-full rounded-[12px] object-contain"
+            />
+          </div>
         </div>
       </div>
     </section>
