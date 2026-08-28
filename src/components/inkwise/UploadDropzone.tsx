@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useState } from 'react';
-import { UploadCloud, FileImage } from 'lucide-react';
+import { useCallback, useState, useRef } from 'react';
+import { FileImage, Sparkles } from 'lucide-react';
 import { useInkWise } from '../../lib/store/InkWiseContext';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -9,6 +9,7 @@ import { twMerge } from 'tailwind-merge';
 export default function UploadDropzone({ className }: { className?: string }) {
   const { addImages } = useInkWise();
   const [isDragging, setIsDragging] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleDrop = useCallback(
     (e: React.DragEvent<HTMLDivElement>) => {
@@ -41,10 +42,10 @@ export default function UploadDropzone({ className }: { className?: string }) {
     <div
       className={twMerge(
         clsx(
-          "relative flex flex-col items-center justify-center p-12 border-2 border-dashed rounded-2xl transition-all",
+          "relative flex flex-col items-center justify-center p-8 md:p-12 transition-all duration-200 w-full min-h-[280px] md:min-h-[320px] rounded-[24px] group",
           isDragging 
-            ? "border-emerald-500 bg-emerald-50/50" 
-            : "border-gray-200 bg-gray-50 hover:bg-gray-100 hover:border-gray-300"
+            ? "bg-blue-50/50 scale-[1.01]" 
+            : "bg-white hover:bg-slate-50/30"
         ),
         className
       )}
@@ -52,26 +53,47 @@ export default function UploadDropzone({ className }: { className?: string }) {
       onDragLeave={() => setIsDragging(false)}
       onDrop={handleDrop}
     >
+      <div className={clsx(
+        "absolute inset-3 md:inset-4 border-2 border-dashed rounded-[16px] pointer-events-none transition-colors duration-200",
+        isDragging ? "border-blue-400" : "border-slate-200 group-hover:border-slate-300"
+      )}></div>
+      
       <input
         type="file"
         multiple
         accept="image/png, image/jpeg, image/webp"
         onChange={handleFileChange}
-        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
         title="Upload images"
+        ref={inputRef}
       />
-      <div className="bg-white p-4 rounded-full shadow-sm mb-4 border border-gray-100">
-        <UploadCloud className="w-8 h-8 text-emerald-600" />
-      </div>
-      <h3 className="text-xl font-semibold text-gray-900 mb-2">Drop your images here</h3>
-      <p className="text-gray-500 mb-6">or click to browse files</p>
-      
-      <div className="flex items-center space-x-4 text-xs font-medium text-gray-400">
-        <span className="flex items-center"><FileImage className="w-3 h-3 mr-1"/> PNG</span>
-        <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
-        <span className="flex items-center"><FileImage className="w-3 h-3 mr-1"/> JPG</span>
-        <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
-        <span className="flex items-center"><FileImage className="w-3 h-3 mr-1"/> WebP</span>
+
+      <div className="relative z-10 flex flex-col items-center pointer-events-none">
+        <div className="relative mb-6 transition-transform duration-200 group-hover:scale-105">
+          <div className="absolute -top-2 -right-2 bg-blue-100 text-blue-600 p-1.5 rounded-full border-2 border-white z-10 shadow-sm">
+            <Sparkles className="w-3.5 h-3.5" />
+          </div>
+          <div className="bg-white p-4 rounded-2xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] border border-slate-100">
+            <FileImage className="w-8 h-8 text-blue-600" />
+          </div>
+        </div>
+
+        <h3 className="text-xl md:text-2xl font-semibold text-slate-900 mb-2">Drop your images here</h3>
+        <p className="text-slate-500 mb-8 text-sm md:text-base">Drag & drop or choose from device</p>
+        
+        <div className="bg-blue-600 text-white font-medium px-8 py-3 rounded-lg shadow-sm transition-all group-hover:bg-blue-700 group-hover:shadow-md">
+          Choose Images
+        </div>
+
+        <div className="mt-8 flex items-center space-x-3 text-[11px] font-medium text-slate-400 uppercase tracking-wider">
+          <span>PNG</span>
+          <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
+          <span>JPG</span>
+          <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
+          <span>JPEG</span>
+          <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
+          <span>WebP</span>
+        </div>
       </div>
     </div>
   );

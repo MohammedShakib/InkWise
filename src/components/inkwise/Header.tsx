@@ -3,18 +3,16 @@ import Image from 'next/image';
 
 export default function Header() {
   return (
-    <header className="flex flex-col md:flex-row items-center justify-between py-6 px-8 border-b border-gray-100 bg-white">
-      <div className="flex flex-col">
-        <div className="flex items-center space-x-3 mb-1">
-          <Image src="/icon.png" alt="InkWise Icon" width={32} height={32} className="object-contain" />
-          <Image src="/logo.png" alt="InkWise" width={120} height={40} className="object-contain" />
-        </div>
-        <p className="text-sm text-gray-500 mt-1">Make your pages truly white.</p>
+    <header className="h-16 md:h-[72px] flex items-center justify-between px-4 md:px-8 border-b border-slate-100 bg-white/80 backdrop-blur-md sticky top-0 z-50">
+      <div className="flex items-center space-x-3">
+        <Image src="/icon.png" alt="InkWise Icon" width={28} height={28} className="object-contain" />
+        <Image src="/logo.png" alt="InkWise" width={110} height={36} className="object-contain" />
       </div>
       
-      <div className="mt-4 md:mt-0 flex items-center bg-gray-50 px-4 py-2 rounded-full border border-gray-100 shadow-sm">
-        <Lock className="w-4 h-4 text-emerald-600 mr-2" />
-        <span className="text-xs font-medium text-gray-700">Processed locally. Nothing is uploaded.</span>
+      <div className="flex items-center bg-slate-50 px-3 py-1.5 rounded-md border border-slate-200">
+        <Lock className="w-3.5 h-3.5 text-blue-600 mr-1.5" />
+        <span className="text-[11px] font-medium text-slate-600 hidden sm:inline">Processed locally. Nothing is uploaded.</span>
+        <span className="text-[11px] font-medium text-slate-600 sm:hidden">Local only</span>
       </div>
     </header>
   );

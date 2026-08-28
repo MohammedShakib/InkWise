@@ -8,6 +8,7 @@ import CompareViewer from '@/components/inkwise/CompareViewer';
 import CleaningPanel from '@/components/inkwise/CleaningPanel';
 import ExportPanel from '@/components/inkwise/ExportPanel';
 import BackgroundAnalysis from '@/components/inkwise/BackgroundAnalysis';
+import { Sparkles, ShieldCheck, Zap, Maximize } from 'lucide-react';
 
 export default function Home() {
   const { images } = useInkWise();
@@ -17,23 +18,67 @@ export default function Home() {
       <Header />
       
       {images.length === 0 ? (
-        <main className="flex-1 overflow-y-auto bg-gray-50 flex flex-col items-center justify-center p-8">
-          <div className="max-w-2xl w-full text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <h2 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl mb-4">
-              Make your pages truly white.
-            </h2>
-            <p className="text-lg text-gray-600 mb-8">
-              Clean AI-generated notes and document images for ink-friendly printing.
-            </p>
-            <div className="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-8 text-sm font-medium text-gray-700">
-              <span className="flex items-center justify-center"><div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center mr-2">1</div> Upload</span>
-              <span className="flex items-center justify-center"><div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center mr-2">2</div> Clean</span>
-              <span className="flex items-center justify-center"><div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center mr-2">3</div> Download</span>
-            </div>
-          </div>
+        <main className="flex-1 overflow-y-auto bg-[#F8FAFC] flex flex-col items-center px-4 py-10 md:py-16 relative">
           
-          <div className="max-w-3xl w-full bg-white rounded-3xl shadow-xl overflow-hidden p-2 animate-in fade-in zoom-in-95 duration-500 delay-150 fill-mode-both">
-            <UploadDropzone className="border-0 bg-white hover:bg-gray-50 p-16" />
+          {/* Subtle background element */}
+          <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[100px] pointer-events-none"></div>
+
+          <div className="max-w-[1200px] w-full flex flex-col items-center relative z-10">
+            
+            {/* Product Context Badge */}
+            <div className="mb-6 flex items-center bg-blue-50 border border-blue-100/50 text-blue-700 px-3 py-1.5 rounded-full text-[13px] font-medium tracking-wide shadow-sm">
+              <Sparkles className="w-3.5 h-3.5 mr-2 text-blue-500" />
+              AI Note & Document Cleaner
+            </div>
+            
+            <div className="text-center mb-10 max-w-[650px] animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <h2 className="text-[36px] leading-[1.15] md:text-[52px] font-[800] tracking-tight text-slate-900 mb-5">
+                Make your pages truly white.
+              </h2>
+              <p className="text-[17px] text-slate-500 md:text-lg">
+                Clean AI-generated notes and document images for ink-friendly printing.
+              </p>
+            </div>
+
+            {/* Workflow Indicator */}
+            <div className="flex items-center space-x-2 md:space-x-4 text-xs md:text-sm font-medium mb-10 animate-in fade-in duration-500 delay-100 text-slate-400">
+              <span className="flex items-center text-blue-700 bg-white shadow-sm border border-slate-100 px-3 py-1.5 rounded-full">
+                <span className="w-4 h-4 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-[10px] mr-2 font-bold">1</span> 
+                Upload
+              </span>
+              <div className="w-6 md:w-12 h-px bg-slate-200"></div>
+              <span className="flex items-center">
+                <span className="w-4 h-4 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-[10px] mr-2 font-bold">2</span> 
+                Clean
+              </span>
+              <div className="w-6 md:w-12 h-px bg-slate-200"></div>
+              <span className="flex items-center">
+                <span className="w-4 h-4 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-[10px] mr-2 font-bold">3</span> 
+                Download
+              </span>
+            </div>
+            
+            {/* Upload Area */}
+            <div className="w-full max-w-[820px] bg-white rounded-[26px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-slate-100 p-1 md:p-1.5 animate-in fade-in zoom-in-95 duration-500 delay-200 fill-mode-both">
+              <UploadDropzone />
+            </div>
+
+            {/* Trust Row */}
+            <div className="mt-8 flex flex-wrap justify-center gap-6 md:gap-12 animate-in fade-in duration-500 delay-300">
+              <div className="flex items-center text-slate-500 text-[13px] md:text-sm font-medium">
+                <ShieldCheck className="w-4 h-4 mr-2 text-slate-400" />
+                Local Processing
+              </div>
+              <div className="flex items-center text-slate-500 text-[13px] md:text-sm font-medium">
+                <Zap className="w-4 h-4 mr-2 text-slate-400" />
+                Fast Batch Cleaning
+              </div>
+              <div className="flex items-center text-slate-500 text-[13px] md:text-sm font-medium">
+                <Maximize className="w-4 h-4 mr-2 text-slate-400" />
+                Original Resolution
+              </div>
+            </div>
+
           </div>
         </main>
       ) : (
@@ -42,7 +87,7 @@ export default function Home() {
           
           <CompareViewer />
           
-          <div className="flex flex-col w-full md:w-[340px] shrink-0 border-l border-gray-100 bg-white overflow-y-auto z-10 shadow-[-4px_0_15px_rgba(0,0,0,0.02)]">
+          <div className="flex flex-col w-full md:w-[340px] shrink-0 border-l border-slate-100 bg-white overflow-y-auto z-10 shadow-[-4px_0_15px_rgba(0,0,0,0.02)]">
             <CleaningPanel />
             <BackgroundAnalysis />
             <ExportPanel />
