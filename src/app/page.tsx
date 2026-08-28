@@ -3,8 +3,7 @@
 import { useInkWise } from '@/lib/store/InkWiseContext';
 import Header from '@/components/inkwise/Header';
 import UploadDropzone from '@/components/inkwise/UploadDropzone';
-import ImageQueue from '@/components/inkwise/ImageQueue';
-import CompareViewer from '@/components/inkwise/CompareViewer';
+import DocumentGrid from '@/components/inkwise/DocumentGrid';
 import CleaningPanel from '@/components/inkwise/CleaningPanel';
 import ExportPanel from '@/components/inkwise/ExportPanel';
 import { Sparkles, ShieldCheck, Zap, Maximize } from 'lucide-react';
@@ -14,7 +13,7 @@ export default function Home() {
 
   return (
     <>
-      <Header workspace={images.length > 0} onBack={images.length > 0 ? clearAll : undefined} />
+      <Header />
       
       {images.length === 0 ? (
         <main className="relative flex flex-1 flex-col items-center overflow-y-auto bg-[linear-gradient(180deg,#f8fbff_0%,#f8fafc_42%,#f1f5f9_100%)] px-4 py-8 md:py-14">
@@ -81,15 +80,13 @@ export default function Home() {
           </div>
         </main>
       ) : (
-        <main className="flex min-h-0 flex-1 flex-col overflow-hidden bg-slate-100 animate-in fade-in duration-300 md:flex-row">
-          <ImageQueue />
+        <main className="flex-1 flex flex-col md:flex-row overflow-hidden bg-[#F8FAFC] animate-in fade-in duration-300">
+          <DocumentGrid />
           
-          <CompareViewer />
-          
-          <aside className="z-10 flex min-h-0 w-full shrink-0 flex-col overflow-y-auto border-l border-slate-200 bg-white shadow-[-6px_0_24px_rgba(15,23,42,0.06)] md:w-[360px]">
+          <div className="flex flex-col w-full md:w-[360px] shrink-0 border-l border-slate-200 bg-white overflow-y-auto z-10 shadow-[-8px_0_24px_rgba(0,0,0,0.04)]">
             <CleaningPanel />
             <ExportPanel />
-          </aside>
+          </div>
         </main>
       )}
     </>
