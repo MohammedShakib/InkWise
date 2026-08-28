@@ -39,47 +39,6 @@ export default function PdfSettings({ onClean, numPages }: { onClean: () => void
 
       <div className="flex-1 overflow-y-auto p-5 md:p-6 space-y-8">
         
-        {/* Cleaning Mode / Presets */}
-        <div>
-          <div className="flex items-center mb-4">
-            <SparklesIcon className="w-4 h-4 text-slate-400 mr-2" />
-            <h3 className="text-sm font-semibold text-slate-700">Cleaning Level</h3>
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            {(['Light', 'Standard', 'Strong', 'Custom'] as const).map(p => (
-              <button
-                key={p}
-                onClick={() => handlePreset(p)}
-                className={`py-2 text-[12px] font-bold rounded-lg border transition-all ${
-                  settings.preset === p 
-                    ? 'bg-blue-50 text-blue-700 border-blue-200 shadow-sm' 
-                    : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
-                }`}
-              >
-                {p}
-              </button>
-            ))}
-          </div>
-
-          {settings.preset === 'Custom' && (
-            <div className="mt-4 p-3 bg-slate-50 rounded-lg border border-slate-200 space-y-3">
-              <div>
-                <div className="flex justify-between text-xs mb-1">
-                  <label className="font-medium text-slate-600">White Point</label>
-                  <span className="text-blue-600 font-bold">{settings.whitePoint}</span>
-                </div>
-                <input 
-                  type="range" min="200" max="255" value={settings.whitePoint}
-                  onChange={(e) => updateSettings({ whitePoint: Number(e.target.value) })}
-                  className="w-full accent-blue-600 h-1.5 bg-slate-200 rounded-full appearance-none cursor-pointer"
-                />
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="h-px bg-slate-100 w-full"></div>
-
         {/* Print Optimization */}
         <div>
           <div className="flex items-center mb-4">
@@ -176,10 +135,3 @@ export default function PdfSettings({ onClean, numPages }: { onClean: () => void
   );
 }
 
-function SparklesIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-      <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
-    </svg>
-  );
-}
