@@ -11,6 +11,7 @@ export default function PdfPreview({ pdfDoc, selectedPage }: { pdfDoc: pdfjsLib.
   const [fitMode, setFitMode] = useState<boolean>(true); // if true, uses w-full max-w-[800px]
   
   const lastRenderId = useRef(0);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let active = true;
@@ -51,6 +52,48 @@ export default function PdfPreview({ pdfDoc, selectedPage }: { pdfDoc: pdfjsLib.
     };
   }, [pdfDoc, selectedPage]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey || e.metaKey) {
+        if (e.key === '=' || e.key === '+') {
+          e.preventDefault();
+          setFitMode(false);
+          setZoomLevel(prev => Math.min(prev + 10, 300));
+        } else if (e.key === '-') {
+          e.preventDefault();
+          setFitMode(false);
+          setZoomLevel(prev => Math.max(prev - 10, 10));
+        }
+      }
+    };
+
+    const handleWheel = (e: WheelEvent) => {
+      if (e.ctrlKey || e.metaKey) {
+        e.preventDefault();
+        setFitMode(false);
+        if (e.deltaY < 0) {
+          setZoomLevel(prev => Math.min(prev + 10, 300));
+        } else {
+          setZoomLevel(prev => Math.max(prev - 10, 10));
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown, { passive: false });
+    
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener('wheel', handleWheel, { passive: false });
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      if (container) {
+        container.removeEventListener('wheel', handleWheel);
+      }
+    };
+  }, []);
+
   const handleZoomIn = () => {
     setFitMode(false);
     setZoomLevel(prev => Math.min(prev + 10, 300));
@@ -67,7 +110,7 @@ export default function PdfPreview({ pdfDoc, selectedPage }: { pdfDoc: pdfjsLib.
   };
 
   return (
-    <div className="flex-1 overflow-y-auto bg-slate-100/50 flex flex-col items-center p-4 md:p-8 relative">
+    <div ref={containerRef} className="flex-1 overflow-y-auto bg-slate-100/50 flex flex-col items-center p-4 md:p-8 relative">
       <div className="sticky top-0 z-10 self-start left-6 flex items-center space-x-3 bg-white/80 backdrop-blur px-3 py-1.5 rounded-full shadow-sm mb-4 border border-slate-200/60">
         <h3 className="font-semibold text-slate-700 text-sm">
           Page {selectedPage}
