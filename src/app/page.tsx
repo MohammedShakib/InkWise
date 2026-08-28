@@ -5,16 +5,21 @@ import Header from '@/components/inkwise/Header';
 import UploadDropzone from '@/components/inkwise/UploadDropzone';
 import DocumentGrid from '@/components/inkwise/DocumentGrid';
 import SettingsPanel from '@/components/inkwise/SettingsPanel';
+import dynamic from 'next/dynamic';
 import { Sparkles, ShieldCheck, Zap, Maximize } from 'lucide-react';
 
+const PdfWorkspace = dynamic(() => import('@/components/inkwise/pdf/PdfWorkspace'), { ssr: false });
+
 export default function Home() {
-  const { images } = useInkWise();
+  const { images, pdfFile } = useInkWise();
 
   return (
     <div className="h-screen flex flex-col bg-[#F8FAFC] overflow-hidden">
       <Header />
       
-      {images.length === 0 ? (
+      {pdfFile ? (
+        <PdfWorkspace />
+      ) : images.length === 0 ? (
         <main className="flex-1 overflow-y-auto relative flex flex-col items-center">
           {/* Extremely subtle radial glow background */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#EFF6FF]/60 via-transparent to-transparent pointer-events-none opacity-60"></div>

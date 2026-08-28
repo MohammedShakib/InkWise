@@ -28,12 +28,20 @@ export interface ExportSettings {
   prefix: string;
 }
 
+export interface PdfSettings {
+  dpi: number;
+  quality: 'high' | 'balanced' | 'small';
+  pageRange: string;
+}
+
 interface InkWiseState {
   images: ImageItem[];
   selectedImageId: string | null;
   settings: InkWiseSettings;
   printSettings: PrintSettings;
   exportSettings: ExportSettings;
+  pdfFile: File | null;
+  pdfSettings: PdfSettings;
 }
 
 interface InkWiseContextType extends InkWiseState {
@@ -47,6 +55,8 @@ interface InkWiseContextType extends InkWiseState {
   updateImageStatus: (id: string, updates: Partial<ImageItem>) => void;
   reorderImages: (oldIndex: number, newIndex: number) => void;
   resetSettings: () => void;
+  setPdfFile: (file: File | null) => void;
+  updatePdfSettings: (settings: Partial<PdfSettings>) => void;
 }
 
 const defaultSettings: InkWiseSettings = {
@@ -66,6 +76,12 @@ const defaultExportSettings: ExportSettings = {
   format: 'png',
   quality: 0.95,
   prefix: 'clean_'
+};
+
+const defaultPdfSettings: PdfSettings = {
+  dpi: 300,
+  quality: 'high',
+  pageRange: ''
 };
 
 const InkWiseContext = createContext<InkWiseContextType | null>(null);
@@ -97,6 +113,9 @@ export const InkWiseProvider = ({ children }: { children: ReactNode }) => {
   const [printSettings, setPrintSettings] = useState<PrintSettings>(() => readStoredState('inkwise_print_settings', defaultPrintSettings));
   const [exportSettings, setExportSettings] = useState<ExportSettings>(() => readStoredState('inkwise_export_settings', defaultExportSettings));
 
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
+  const [pdfSettings, setPdfSettings] = useState<PdfSettings>(() => readStoredState('inkwise_pdf_settings', defaultPdfSettings));
+
   // Save to localStorage on change
   useEffect(() => {
     localStorage.setItem('inkwise_settings', JSON.stringify(settings));
@@ -109,6 +128,10 @@ export const InkWiseProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     localStorage.setItem('inkwise_export_settings', JSON.stringify(exportSettings));
   }, [exportSettings]);
+
+  useEffect(() => {
+    localStorage.setItem('inkwise_pdf_settings', JSON.stringify(pdfSettings));
+  }, [pdfSettings]);
 
   const addImages = useCallback(async (files: File[]) => {
     const newItems: ImageItem[] = [];
@@ -188,6 +211,7 @@ export const InkWiseProvider = ({ children }: { children: ReactNode }) => {
       return [];
     });
     setSelectedImageId(null);
+    setPdfFile(null);
   }, []);
 
   const selectImage = useCallback((id: string | null) => {
@@ -204,6 +228,10 @@ export const InkWiseProvider = ({ children }: { children: ReactNode }) => {
 
   const updateExportSettings = useCallback((updates: Partial<ExportSettings>) => {
     setExportSettings(prev => ({ ...prev, ...updates }));
+  }, []);
+
+  const updatePdfSettings = useCallback((updates: Partial<PdfSettings>) => {
+    setPdfSettings(prev => ({ ...prev, ...updates }));
   }, []);
 
   const updateImageStatus = useCallback((id: string, updates: Partial<ImageItem>) => {
@@ -241,6 +269,8 @@ export const InkWiseProvider = ({ children }: { children: ReactNode }) => {
         settings,
         printSettings,
         exportSettings,
+        pdfFile,
+        pdfSettings,
         addImages,
         removeImage,
         clearAll,
@@ -250,7 +280,9 @@ export const InkWiseProvider = ({ children }: { children: ReactNode }) => {
         updateExportSettings,
         updateImageStatus,
         reorderImages,
-        resetSettings
+        resetSettings,
+        setPdfFile,
+        updatePdfSettings
       }}
     >
       {children}

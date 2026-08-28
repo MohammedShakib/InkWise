@@ -7,7 +7,7 @@ import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 export default function UploadDropzone({ className }: { className?: string }) {
-  const { addImages } = useInkWise();
+  const { addImages, setPdfFile } = useInkWise();
   const [isDragging, setIsDragging] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -17,7 +17,17 @@ export default function UploadDropzone({ className }: { className?: string }) {
       setIsDragging(false);
       
       if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-        const files = Array.from(e.dataTransfer.files).filter(file => 
+        const fileList = Array.from(e.dataTransfer.files);
+        
+        // Handle PDF
+        const pdfFile = fileList.find(f => f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf'));
+        if (pdfFile) {
+          setPdfFile(pdfFile);
+          return;
+        }
+
+        // Handle Images
+        const files = fileList.filter(file => 
           file.type.startsWith('image/png') || 
           file.type.startsWith('image/jpeg') || 
           file.type.startsWith('image/webp')
@@ -25,17 +35,26 @@ export default function UploadDropzone({ className }: { className?: string }) {
         if (files.length > 0) addImages(files);
       }
     },
-    [addImages]
+    [addImages, setPdfFile]
   );
 
   const handleFileChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       if (e.target.files && e.target.files.length > 0) {
-        const files = Array.from(e.target.files);
-        addImages(files);
+        const fileList = Array.from(e.target.files);
+        
+        // Handle PDF
+        const pdfFile = fileList.find(f => f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf'));
+        if (pdfFile) {
+          setPdfFile(pdfFile);
+          return;
+        }
+
+        // Handle Images
+        addImages(fileList);
       }
     },
-    [addImages]
+    [addImages, setPdfFile]
   );
 
   return (
@@ -59,10 +78,10 @@ export default function UploadDropzone({ className }: { className?: string }) {
       <input
         type="file"
         multiple
-        accept="image/png, image/jpeg, image/webp"
+        accept="image/png, image/jpeg, image/webp, application/pdf"
         onChange={handleFileChange}
         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
-        title="Upload images"
+        title="Upload images or PDF"
         ref={inputRef}
       />
 
@@ -78,17 +97,17 @@ export default function UploadDropzone({ className }: { className?: string }) {
         </div>
 
         {isDragging ? (
-          <h3 className="text-[20px] md:text-[22px] font-[650] text-[#2563EB] mb-1">Drop to add your images</h3>
+          <h3 className="text-[20px] md:text-[22px] font-[650] text-[#2563EB] mb-1">Drop to add your images or PDF</h3>
         ) : (
-          <h3 className="text-[20px] md:text-[22px] font-[650] text-[#0F172A] mb-1">Drop your images here</h3>
+          <h3 className="text-[20px] md:text-[22px] font-[650] text-[#0F172A] mb-1">Drop your images or PDF here</h3>
         )}
         
         <p className="text-[#64748B] mb-7 text-[14px] md:text-[15px]">
-          Drag & drop images, or choose from your device
+          Drag & drop images or a PDF document
         </p>
         
         <div className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-[15px] font-medium px-[28px] h-[46px] flex items-center justify-center rounded-[11px] shadow-[0_2px_4px_rgba(37,99,235,0.15)] transition-all duration-150 group-hover:-translate-y-[1px]">
-          Choose Images
+          Choose Files
         </div>
 
         <div className="mt-6 flex items-center space-x-4 text-[11px] font-medium text-slate-400 tracking-wider">
@@ -96,6 +115,8 @@ export default function UploadDropzone({ className }: { className?: string }) {
           <span>JPG</span>
           <span>JPEG</span>
           <span>WEBP</span>
+          <span className="w-1 h-1 bg-slate-300 rounded-full mx-1"></span>
+          <span>PDF</span>
         </div>
       </div>
     </div>
