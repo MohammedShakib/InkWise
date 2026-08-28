@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} flex min-h-screen flex-col overflow-hidden bg-slate-50 font-sans antialiased text-slate-950`}>
+      <body className={`${inter.variable} flex min-h-screen flex-col overflow-x-hidden bg-slate-50 font-sans antialiased text-slate-950`}>
         <ClientWrapper>{children}</ClientWrapper>
       </body>
     </html>

@@ -92,7 +92,7 @@ export default function CompareViewer() {
   const isRenderingPreview = preview?.key !== currentPreviewKey;
 
   return (
-    <section className="flex min-w-0 flex-1 flex-col overflow-hidden bg-slate-100/80">
+    <section className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-slate-100/80">
       <div className="border-b border-slate-200 bg-white/92 px-5 py-4 backdrop-blur-sm md:px-8">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="min-w-0">
@@ -122,7 +122,7 @@ export default function CompareViewer() {
         </div>
       </div>
 
-      <div className="flex-1 overflow-auto p-4 md:p-8">
+      <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden p-4 md:p-8">
         <div className="mx-auto flex min-h-full max-w-5xl items-start justify-center rounded-[28px] border border-slate-200/80 bg-white p-4 shadow-[0_22px_60px_rgba(15,23,42,0.08)] md:p-8">
           <Image
             src={displayUrl}

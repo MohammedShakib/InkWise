@@ -81,12 +81,12 @@ export default function Home() {
           </div>
         </main>
       ) : (
-        <main className="flex flex-1 flex-col overflow-hidden bg-slate-100 animate-in fade-in duration-300 md:flex-row">
+        <main className="flex min-h-0 flex-1 flex-col overflow-hidden bg-slate-100 animate-in fade-in duration-300 md:flex-row">
           <ImageQueue />
           
           <CompareViewer />
           
-          <aside className="z-10 flex w-full shrink-0 flex-col overflow-y-auto border-l border-slate-200 bg-white shadow-[-6px_0_24px_rgba(15,23,42,0.06)] md:w-[360px]">
+          <aside className="z-10 flex min-h-0 w-full shrink-0 flex-col overflow-y-auto border-l border-slate-200 bg-white shadow-[-6px_0_24px_rgba(15,23,42,0.06)] md:w-[360px]">
             <CleaningPanel />
             <ExportPanel />
           </aside>
