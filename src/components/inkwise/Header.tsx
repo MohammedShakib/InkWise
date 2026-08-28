@@ -3,17 +3,17 @@ import Image from 'next/image';
 
 export default function Header() {
   return (
-    <header className="h-14 md:h-[60px] flex items-center justify-between px-4 md:px-6 border-b border-slate-100 bg-white/95 backdrop-blur-md sticky top-0 z-50 shadow-sm">
-      <div className="flex items-center space-x-2">
-        <Image src="/logo.png" alt="InkWise" width={110} height={36} className="object-contain" />
+    <header className="h-[64px] md:h-[68px] flex items-center justify-between px-4 md:px-8 border-b border-slate-200/60 bg-white/95 backdrop-blur-md sticky top-0 z-50">
+      <div className="flex items-center">
+        <Image src="/logo.png" alt="InkWise" width={105} height={32} className="object-contain h-[30px] md:h-[34px] w-auto" priority />
       </div>
 
-      <div className="flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 shadow-sm">
+      <div className="flex items-center rounded-full border border-slate-200/80 bg-slate-50/80 px-3 py-1.5 shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
         <Lock className="mr-1.5 h-3.5 w-3.5 text-blue-600" />
-        <span className="hidden text-[11px] font-medium text-slate-600 sm:inline">
-          Processed locally. Nothing is uploaded.
+        <span className="text-[12px] font-medium text-slate-600">
+          Processed locally
+          <span className="hidden sm:inline">. Nothing is uploaded.</span>
         </span>
-        <span className="text-[11px] font-medium text-slate-600 sm:hidden">Local only</span>
       </div>
     </header>
   );

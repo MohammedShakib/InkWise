@@ -42,10 +42,8 @@ export default function UploadDropzone({ className }: { className?: string }) {
     <div
       className={twMerge(
         clsx(
-          "relative flex flex-col items-center justify-center p-8 md:p-12 transition-all duration-200 w-full min-h-[280px] md:min-h-[320px] rounded-[24px] group",
-          isDragging 
-            ? "bg-blue-50/50 scale-[1.01]" 
-            : "bg-white hover:bg-slate-50/30"
+          "relative flex flex-col items-center justify-center p-6 md:p-10 transition-all duration-200 w-full min-h-[270px] md:min-h-[320px] rounded-[22px] md:rounded-[24px] group bg-white",
+          isDragging ? "bg-blue-50/30" : "hover:bg-slate-50/40"
         ),
         className
       )}
@@ -54,8 +52,8 @@ export default function UploadDropzone({ className }: { className?: string }) {
       onDrop={handleDrop}
     >
       <div className={clsx(
-        "absolute inset-3 md:inset-4 border-2 border-dashed rounded-[16px] pointer-events-none transition-colors duration-200",
-        isDragging ? "border-blue-400" : "border-slate-200 group-hover:border-slate-300"
+        "absolute inset-3 md:inset-4 border-[1.5px] border-dashed rounded-[14px] md:rounded-[16px] pointer-events-none transition-colors duration-200",
+        isDragging ? "border-blue-400 bg-blue-50/20" : "border-slate-300/80 group-hover:border-blue-300"
       )}></div>
       
       <input
@@ -69,30 +67,35 @@ export default function UploadDropzone({ className }: { className?: string }) {
       />
 
       <div className="relative z-10 flex flex-col items-center pointer-events-none">
-        <div className="relative mb-6 transition-transform duration-200 group-hover:scale-105">
-          <div className="absolute -top-2 -right-2 bg-blue-100 text-blue-600 p-1.5 rounded-full border-2 border-white z-10 shadow-sm">
-            <Sparkles className="w-3.5 h-3.5" />
+        
+        <div className="relative mb-5 transition-transform duration-200 group-hover:scale-[1.03]">
+          <div className="absolute -top-1.5 -right-1.5 bg-[#EFF6FF] text-[#2563EB] p-1 rounded-full border-2 border-white z-10">
+            <Sparkles className="w-3 h-3" />
           </div>
-          <div className="bg-white p-4 rounded-2xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] border border-slate-100">
-            <FileImage className="w-8 h-8 text-blue-600" />
+          <div className="bg-[#EFF6FF] w-12 h-12 md:w-14 md:h-14 flex items-center justify-center rounded-[14px] border border-blue-100/50 text-[#2563EB]">
+            <FileImage className="w-6 h-6 md:w-7 md:h-7" />
           </div>
         </div>
 
-        <h3 className="text-xl md:text-2xl font-semibold text-slate-900 mb-2">Drop your images here</h3>
-        <p className="text-slate-500 mb-8 text-sm md:text-base">Drag & drop or choose from device</p>
+        {isDragging ? (
+          <h3 className="text-[20px] md:text-[22px] font-[650] text-[#2563EB] mb-1">Drop to add your images</h3>
+        ) : (
+          <h3 className="text-[20px] md:text-[22px] font-[650] text-[#0F172A] mb-1">Drop your images here</h3>
+        )}
         
-        <div className="bg-blue-600 text-white font-medium px-8 py-3 rounded-lg shadow-sm transition-all group-hover:bg-blue-700 group-hover:shadow-md">
+        <p className="text-[#64748B] mb-7 text-[14px] md:text-[15px]">
+          Drag & drop images, or choose from your device
+        </p>
+        
+        <div className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-[15px] font-medium px-[28px] h-[46px] flex items-center justify-center rounded-[11px] shadow-[0_2px_4px_rgba(37,99,235,0.15)] transition-all duration-150 group-hover:-translate-y-[1px]">
           Choose Images
         </div>
 
-        <div className="mt-8 flex items-center space-x-3 text-[11px] font-medium text-slate-400 uppercase tracking-wider">
+        <div className="mt-6 flex items-center space-x-4 text-[11px] font-medium text-slate-400 tracking-wider">
           <span>PNG</span>
-          <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
           <span>JPG</span>
-          <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
           <span>JPEG</span>
-          <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
-          <span>WebP</span>
+          <span>WEBP</span>
         </div>
       </div>
     </div>

@@ -9,70 +9,69 @@ import ExportPanel from '@/components/inkwise/ExportPanel';
 import { Sparkles, ShieldCheck, Zap, Maximize } from 'lucide-react';
 
 export default function Home() {
-  const { images, clearAll } = useInkWise();
+  const { images } = useInkWise();
 
   return (
-    <>
+    <div className="h-screen flex flex-col bg-[#F8FAFC] overflow-hidden">
       <Header />
       
       {images.length === 0 ? (
-        <main className="relative flex flex-1 flex-col items-center overflow-y-auto bg-[linear-gradient(180deg,#f8fbff_0%,#f8fafc_42%,#f1f5f9_100%)] px-4 py-8 md:py-14">
-          
-          {/* Subtle background element */}
-          <div className="pointer-events-none absolute left-1/2 top-[-18%] h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-blue-500/7 blur-[110px]"></div>
+        <main className="flex-1 overflow-y-auto relative flex flex-col items-center">
+          {/* Extremely subtle radial glow background */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#EFF6FF]/60 via-transparent to-transparent pointer-events-none opacity-60"></div>
 
-          <div className="relative z-10 flex w-full max-w-[1200px] flex-col items-center">
+          <div className="w-full max-w-[1140px] px-4 md:px-6 py-6 md:py-10 flex flex-col items-center relative z-10">
             
             {/* Product Context Badge */}
-            <div className="mb-6 flex items-center rounded-full border border-blue-100 bg-white/80 px-3 py-1.5 text-[13px] font-medium tracking-wide text-blue-700 shadow-sm shadow-blue-100/80 backdrop-blur-sm">
-              <Sparkles className="mr-2 h-3.5 w-3.5 text-blue-500" />
+            <div className="mb-4 flex items-center bg-[#EFF6FF] border border-[#2563EB]/10 text-[#2563EB] px-2.5 py-1 rounded-full text-[11px] font-medium tracking-wide">
+              <Sparkles className="w-3 h-3 mr-1.5" />
               AI Note & Document Cleaner
             </div>
             
-            <div className="mb-10 max-w-[650px] text-center animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <h2 className="mb-5 text-[36px] font-[800] leading-[1.1] tracking-tight text-slate-950 md:text-[52px]">
+            <div className="text-center mb-6 max-w-[620px]">
+              <h2 className="text-[36px] md:text-[52px] leading-[1.02] font-[750] tracking-tight text-[#0F172A] mb-3">
                 Make your pages truly white.
               </h2>
-              <p className="text-[17px] text-slate-600 md:text-lg">
+              <p className="text-[15px] md:text-[16px] text-[#64748B] leading-relaxed mx-auto max-w-[560px]">
                 Clean AI-generated notes and document images for ink-friendly printing.
               </p>
             </div>
 
             {/* Workflow Indicator */}
-            <div className="mb-10 flex items-center space-x-2 text-xs font-medium text-slate-400 animate-in fade-in duration-500 delay-100 md:space-x-4 md:text-sm">
-              <span className="flex items-center rounded-full border border-slate-200 bg-white px-3 py-1.5 text-blue-700 shadow-sm shadow-slate-200/70">
-                <span className="mr-2 flex h-4 w-4 items-center justify-center rounded-full bg-blue-100 text-[10px] font-bold text-blue-700">1</span>
+            <div className="flex items-center text-[13px] md:text-[14px] font-medium mb-8 text-[#64748B]">
+              <div className="flex items-center text-[#2563EB]">
+                <div className="w-2 h-2 rounded-full bg-[#2563EB] mr-2"></div>
                 Upload
-              </span>
-              <div className="h-px w-6 bg-slate-200 md:w-12"></div>
-              <span className="flex items-center">
-                <span className="mr-2 flex h-4 w-4 items-center justify-center rounded-full bg-slate-100 text-[10px] font-bold text-slate-500">2</span>
+              </div>
+              <div className="w-8 md:w-14 h-[1.5px] bg-[#E2E8F0] mx-3 md:mx-4"></div>
+              <div className="flex items-center">
+                <div className="w-2 h-2 rounded-full border-2 border-[#E2E8F0] mr-2"></div>
                 Clean
-              </span>
-              <div className="h-px w-6 bg-slate-200 md:w-12"></div>
-              <span className="flex items-center">
-                <span className="mr-2 flex h-4 w-4 items-center justify-center rounded-full bg-slate-100 text-[10px] font-bold text-slate-500">3</span>
+              </div>
+              <div className="w-8 md:w-14 h-[1.5px] bg-[#E2E8F0] mx-3 md:mx-4"></div>
+              <div className="flex items-center">
+                <div className="w-2 h-2 rounded-full border-2 border-[#E2E8F0] mr-2"></div>
                 Download
-              </span>
+              </div>
             </div>
             
             {/* Upload Area */}
-            <div className="w-full max-w-[820px] rounded-[26px] border border-white/80 bg-white/90 p-1 shadow-[0_18px_45px_rgba(15,23,42,0.08)] animate-in fade-in zoom-in-95 duration-500 delay-200 fill-mode-both md:p-1.5">
+            <div className="w-full max-w-[780px] bg-white rounded-[24px] shadow-[0_4px_16px_rgba(15,23,42,0.03)] border border-[#E2E8F0] p-1 md:p-1.5 relative z-20">
               <UploadDropzone />
             </div>
 
             {/* Trust Row */}
-            <div className="mt-8 flex flex-wrap justify-center gap-6 animate-in fade-in duration-500 delay-300 md:gap-12">
-              <div className="flex items-center text-[13px] font-medium text-slate-500 md:text-sm">
-                <ShieldCheck className="mr-2 h-4 w-4 text-slate-400" />
+            <div className="mt-6 flex flex-wrap justify-center gap-5 md:gap-8 max-w-[600px]">
+              <div className="flex items-center text-[#64748B] text-[13px] font-medium">
+                <ShieldCheck className="w-[15px] h-[15px] mr-1.5 opacity-80" />
                 Local Processing
               </div>
-              <div className="flex items-center text-[13px] font-medium text-slate-500 md:text-sm">
-                <Zap className="mr-2 h-4 w-4 text-slate-400" />
+              <div className="flex items-center text-[#64748B] text-[13px] font-medium">
+                <Zap className="w-[15px] h-[15px] mr-1.5 opacity-80" />
                 Fast Batch Cleaning
               </div>
-              <div className="flex items-center text-[13px] font-medium text-slate-500 md:text-sm">
-                <Maximize className="mr-2 h-4 w-4 text-slate-400" />
+              <div className="flex items-center text-[#64748B] text-[13px] font-medium">
+                <Maximize className="w-[15px] h-[15px] mr-1.5 opacity-80" />
                 Original Resolution
               </div>
             </div>
@@ -89,6 +88,6 @@ export default function Home() {
           </div>
         </main>
       )}
-    </>
+    </div>
   );
 }
