@@ -3,8 +3,13 @@
 import { useEffect, useState, useRef } from 'react';
 import { pdfjsLib } from '../../../lib/pdf/pdf-setup';
 
+import { ZoomIn, ZoomOut, Maximize } from 'lucide-react';
+
 export default function PdfPreview({ pdfDoc, selectedPage }: { pdfDoc: pdfjsLib.PDFDocumentProxy | null, selectedPage: number }) {
   const [originalUrl, setOriginalUrl] = useState<string | null>(null);
+  const [zoomLevel, setZoomLevel] = useState<number>(100); // percentage
+  const [fitMode, setFitMode] = useState<boolean>(true); // if true, uses w-full max-w-[800px]
+  
   const lastRenderId = useRef(0);
 
   useEffect(() => {
@@ -46,13 +51,52 @@ export default function PdfPreview({ pdfDoc, selectedPage }: { pdfDoc: pdfjsLib.
     };
   }, [pdfDoc, selectedPage]);
 
+  const handleZoomIn = () => {
+    setFitMode(false);
+    setZoomLevel(prev => Math.min(prev + 25, 300));
+  };
+
+  const handleZoomOut = () => {
+    setFitMode(false);
+    setZoomLevel(prev => Math.max(prev - 25, 25));
+  };
+
+  const handleFit = () => {
+    setFitMode(true);
+    setZoomLevel(100);
+  };
+
   return (
-    <div className="flex-1 overflow-y-auto bg-slate-100 flex flex-col items-center p-4 md:p-8 relative">
-      <h3 className="sticky top-0 self-start left-6 z-10 font-semibold text-slate-700 bg-white/80 backdrop-blur px-3 py-1 rounded-full shadow-sm mb-4">
-        Page {selectedPage} Preview
-      </h3>
+    <div className="flex-1 overflow-y-auto bg-slate-100/50 flex flex-col items-center p-4 md:p-8 relative">
+      <div className="sticky top-0 z-10 self-start left-6 flex items-center space-x-3 bg-white/80 backdrop-blur px-3 py-1.5 rounded-full shadow-sm mb-4 border border-slate-200/60">
+        <h3 className="font-semibold text-slate-700 text-sm">
+          Page {selectedPage}
+        </h3>
+        <div className="w-px h-4 bg-slate-300"></div>
+        <div className="flex items-center space-x-1">
+          <button onClick={handleZoomOut} className="p-1 hover:bg-slate-100 rounded text-slate-600 transition-colors" title="Zoom Out">
+            <ZoomOut className="w-4 h-4" />
+          </button>
+          <span className="text-xs font-medium text-slate-600 w-10 text-center select-none">
+            {fitMode ? 'Fit' : `${zoomLevel}%`}
+          </span>
+          <button onClick={handleZoomIn} className="p-1 hover:bg-slate-100 rounded text-slate-600 transition-colors" title="Zoom In">
+            <ZoomIn className="w-4 h-4" />
+          </button>
+          <div className="w-px h-3 bg-slate-200 mx-1"></div>
+          <button onClick={handleFit} className={`p-1 rounded transition-colors ${fitMode ? 'bg-blue-50 text-blue-600' : 'hover:bg-slate-100 text-slate-600'}`} title="Fit Width">
+            <Maximize className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
       
-      <div className="w-full max-w-[800px] flex items-center justify-center">
+      <div 
+        className="flex flex-col items-center justify-center transition-all duration-200 origin-top"
+        style={{
+          width: fitMode ? '100%' : `${zoomLevel}%`,
+          maxWidth: fitMode ? '800px' : 'none'
+        }}
+      >
         {!originalUrl ? (
           <div className="flex flex-col items-center justify-center p-20 text-slate-400">
             <svg className="animate-spin h-8 w-8 text-blue-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
