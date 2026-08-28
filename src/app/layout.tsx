@@ -8,6 +8,9 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 export const metadata: Metadata = {
   title: "InkWise - Pure White Pages",
   description: "Clean AI-generated notes and document images for ink-friendly printing. Process entire batches directly in your browser with zero server uploads.",
+  icons: {
+    icon: "/icon.png",
+  },
 };
 
 export default function RootLayout({

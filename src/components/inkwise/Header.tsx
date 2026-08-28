@@ -1,10 +1,14 @@
 import { Lock } from 'lucide-react';
+import Image from 'next/image';
 
 export default function Header() {
   return (
     <header className="flex flex-col md:flex-row items-center justify-between py-6 px-8 border-b border-gray-100 bg-white">
       <div className="flex flex-col">
-        <h1 className="text-2xl font-bold tracking-tight text-gray-900">InkWise</h1>
+        <div className="flex items-center space-x-3 mb-1">
+          <Image src="/icon.png" alt="InkWise Icon" width={32} height={32} className="object-contain" />
+          <Image src="/logo.png" alt="InkWise" width={120} height={40} className="object-contain" />
+        </div>
         <p className="text-sm text-gray-500 mt-1">Make your pages truly white.</p>
       </div>
       
