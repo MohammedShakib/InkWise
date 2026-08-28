@@ -4,8 +4,7 @@ import { useInkWise } from '@/lib/store/InkWiseContext';
 import Header from '@/components/inkwise/Header';
 import UploadDropzone from '@/components/inkwise/UploadDropzone';
 import DocumentGrid from '@/components/inkwise/DocumentGrid';
-import CleaningPanel from '@/components/inkwise/CleaningPanel';
-import ExportPanel from '@/components/inkwise/ExportPanel';
+import SettingsPanel from '@/components/inkwise/SettingsPanel';
 import { Sparkles, ShieldCheck, Zap, Maximize } from 'lucide-react';
 
 export default function Home() {
@@ -82,9 +81,8 @@ export default function Home() {
         <main className="flex-1 flex flex-col md:flex-row overflow-hidden bg-[#F8FAFC] animate-in fade-in duration-300">
           <DocumentGrid />
           
-          <div className="flex flex-col w-full md:w-[360px] shrink-0 border-l border-slate-200 bg-white overflow-y-auto z-10 shadow-[-8px_0_24px_rgba(0,0,0,0.04)]">
-            <CleaningPanel />
-            <ExportPanel />
+          <div className="flex flex-col w-full md:w-[320px] shrink-0 border-l border-slate-200 bg-white overflow-hidden z-10 shadow-[-8px_0_24px_rgba(0,0,0,0.04)]">
+            <SettingsPanel />
           </div>
         </main>
       )}

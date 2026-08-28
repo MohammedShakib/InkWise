@@ -25,7 +25,7 @@ export interface ImageItem {
 export interface ExportSettings {
   format: 'png' | 'jpeg' | 'webp';
   quality: number;
-  suffix: string;
+  prefix: string;
 }
 
 interface InkWiseState {
@@ -45,6 +45,7 @@ interface InkWiseContextType extends InkWiseState {
   updatePrintSettings: (settings: Partial<PrintSettings>) => void;
   updateExportSettings: (settings: Partial<ExportSettings>) => void;
   updateImageStatus: (id: string, updates: Partial<ImageItem>) => void;
+  reorderImages: (oldIndex: number, newIndex: number) => void;
   resetSettings: () => void;
 }
 
@@ -64,7 +65,7 @@ const defaultPrintSettings: PrintSettings = {
 const defaultExportSettings: ExportSettings = {
   format: 'png',
   quality: 0.95,
-  suffix: '_clean'
+  prefix: 'clean_'
 };
 
 const InkWiseContext = createContext<InkWiseContextType | null>(null);
@@ -217,6 +218,15 @@ export const InkWiseProvider = ({ children }: { children: ReactNode }) => {
     }));
   }, []);
 
+  const reorderImages = useCallback((oldIndex: number, newIndex: number) => {
+    setImages(prev => {
+      const result = Array.from(prev);
+      const [removed] = result.splice(oldIndex, 1);
+      result.splice(newIndex, 0, removed);
+      return result;
+    });
+  }, []);
+
   const resetSettings = useCallback(() => {
     setSettings(defaultSettings);
     setPrintSettings(defaultPrintSettings);
@@ -239,6 +249,7 @@ export const InkWiseProvider = ({ children }: { children: ReactNode }) => {
         updatePrintSettings,
         updateExportSettings,
         updateImageStatus,
+        reorderImages,
         resetSettings
       }}
     >
