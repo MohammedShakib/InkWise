@@ -69,29 +69,32 @@ const defaultExportSettings: ExportSettings = {
 
 const InkWiseContext = createContext<InkWiseContextType | null>(null);
 
+function readStoredState<T>(key: string, fallback: T): T {
+  if (typeof window === 'undefined') {
+    return fallback;
+  }
+
+  try {
+    const storedValue = window.localStorage.getItem(key);
+    if (!storedValue) {
+      return fallback;
+    }
+
+    const parsedValue = JSON.parse(storedValue) as Partial<T>;
+    return { ...fallback, ...parsedValue };
+  } catch (error) {
+    console.error(`Error loading ${key}`, error);
+    return fallback;
+  }
+}
+
 export const InkWiseProvider = ({ children }: { children: ReactNode }) => {
   const [images, setImages] = useState<ImageItem[]>([]);
   const [selectedImageId, setSelectedImageId] = useState<string | null>(null);
   
-  const [settings, setSettings] = useState<InkWiseSettings>(defaultSettings);
-  const [printSettings, setPrintSettings] = useState<PrintSettings>(defaultPrintSettings);
-  const [exportSettings, setExportSettings] = useState<ExportSettings>(defaultExportSettings);
-
-  // Load from localStorage on mount
-  useEffect(() => {
-    try {
-      const savedSettings = localStorage.getItem('inkwise_settings');
-      if (savedSettings) setSettings(JSON.parse(savedSettings));
-      
-      const savedPrint = localStorage.getItem('inkwise_print_settings');
-      if (savedPrint) setPrintSettings(JSON.parse(savedPrint));
-      
-      const savedExport = localStorage.getItem('inkwise_export_settings');
-      if (savedExport) setExportSettings(JSON.parse(savedExport));
-    } catch (e) {
-      console.error("Error loading settings", e);
-    }
-  }, []);
+  const [settings, setSettings] = useState<InkWiseSettings>(() => readStoredState('inkwise_settings', defaultSettings));
+  const [printSettings, setPrintSettings] = useState<PrintSettings>(() => readStoredState('inkwise_print_settings', defaultPrintSettings));
+  const [exportSettings, setExportSettings] = useState<ExportSettings>(() => readStoredState('inkwise_export_settings', defaultExportSettings));
 
   // Save to localStorage on change
   useEffect(() => {
@@ -203,7 +206,15 @@ export const InkWiseProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const updateImageStatus = useCallback((id: string, updates: Partial<ImageItem>) => {
-    setImages(prev => prev.map(img => img.id === id ? { ...img, ...updates } : img));
+    setImages(prev => prev.map(img => {
+      if (img.id !== id) return img;
+
+      if (updates.processedUrl && img.processedUrl && img.processedUrl !== updates.processedUrl) {
+        URL.revokeObjectURL(img.processedUrl);
+      }
+
+      return { ...img, ...updates };
+    }));
   }, []);
 
   const resetSettings = useCallback(() => {

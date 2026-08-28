@@ -33,7 +33,7 @@ export async function fileToImageData(file: File): Promise<ImageData> {
       img = htmlImg;
     }
 
-    const { canvas, ctx } = getCanvas(img.width, img.height);
+    const { ctx } = getCanvas(img.width, img.height);
     ctx.drawImage(img, 0, 0);
     return ctx.getImageData(0, 0, img.width, img.height);
   } finally {

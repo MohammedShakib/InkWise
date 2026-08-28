@@ -7,15 +7,14 @@ import ImageQueue from '@/components/inkwise/ImageQueue';
 import CompareViewer from '@/components/inkwise/CompareViewer';
 import CleaningPanel from '@/components/inkwise/CleaningPanel';
 import ExportPanel from '@/components/inkwise/ExportPanel';
-import BackgroundAnalysis from '@/components/inkwise/BackgroundAnalysis';
 import { Sparkles, ShieldCheck, Zap, Maximize } from 'lucide-react';
 
 export default function Home() {
-  const { images } = useInkWise();
+  const { images, clearAll } = useInkWise();
 
   return (
     <>
-      <Header />
+      <Header workspace={images.length > 0} onBack={images.length > 0 ? clearAll : undefined} />
       
       {images.length === 0 ? (
         <main className="relative flex flex-1 flex-col items-center overflow-y-auto bg-[linear-gradient(180deg,#f8fbff_0%,#f8fafc_42%,#f1f5f9_100%)] px-4 py-8 md:py-14">
@@ -82,16 +81,15 @@ export default function Home() {
           </div>
         </main>
       ) : (
-        <main className="flex-1 flex flex-col md:flex-row overflow-hidden bg-white animate-in fade-in duration-300">
+        <main className="flex flex-1 flex-col overflow-hidden bg-slate-100 animate-in fade-in duration-300 md:flex-row">
           <ImageQueue />
           
           <CompareViewer />
           
-          <div className="flex flex-col w-full md:w-[340px] shrink-0 border-l border-slate-100 bg-white overflow-y-auto z-10 shadow-[-4px_0_15px_rgba(0,0,0,0.02)]">
+          <aside className="z-10 flex w-full shrink-0 flex-col overflow-y-auto border-l border-slate-200 bg-white shadow-[-6px_0_24px_rgba(15,23,42,0.06)] md:w-[360px]">
             <CleaningPanel />
-            <BackgroundAnalysis />
             <ExportPanel />
-          </div>
+          </aside>
         </main>
       )}
     </>

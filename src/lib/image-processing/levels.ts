@@ -22,7 +22,7 @@ export function applyLevels(
     normalized = Math.max(0, Math.min(1, normalized));
     
     // Apply gamma correction
-    let output = Math.pow(normalized, 1 / gamma);
+    const output = Math.pow(normalized, 1 / gamma);
     
     // Scale back to 0-255
     lut[i] = Math.round(output * 255);

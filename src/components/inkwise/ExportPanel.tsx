@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useInkWise } from '../../lib/store/InkWiseContext';
-import { Download, PlayCircle, Archive } from 'lucide-react';
+import { Archive, PlayCircle } from 'lucide-react';
 import JSZip from 'jszip';
 import { getWorkerPool } from '../../lib/image-processing/worker-client';
 import { fileToImageData, imageDataToBlob } from '../../lib/image-processing/image-utils';
@@ -13,7 +13,7 @@ export default function ExportPanel() {
   const [progress, setProgress] = useState({ current: 0, total: 0, failed: 0 });
 
   const processAll = async () => {
-    const toProcess = images.filter(img => img.status === 'Ready' || img.status === 'Failed');
+    const toProcess = images.filter((img) => img.status !== 'Processing');
     if (toProcess.length === 0) return;
 
     setIsProcessing(true);
@@ -23,7 +23,7 @@ export default function ExportPanel() {
 
     const promises = toProcess.map(async (img) => {
       try {
-        updateImageStatus(img.id, { status: 'Processing' });
+        updateImageStatus(img.id, { status: 'Processing', error: undefined });
         
         // Decode full image
         const imageData = await fileToImageData(img.file);
@@ -44,6 +44,10 @@ export default function ExportPanel() {
         const blob = await imageDataToBlob(result.imageData, exportSettings.format, exportSettings.quality);
         const processedUrl = URL.createObjectURL(blob);
 
+        if (img.processedUrl) {
+          URL.revokeObjectURL(img.processedUrl);
+        }
+
         updateImageStatus(img.id, { 
           status: 'Completed', 
           processedBlob: blob, 
@@ -53,9 +57,10 @@ export default function ExportPanel() {
         });
         
         setProgress(p => ({ ...p, current: p.current + 1 }));
-      } catch (err: any) {
-        updateImageStatus(img.id, { status: 'Failed', error: err.message });
-        setProgress(p => ({ ...p, failed: p.failed + 1, current: p.current + 1 }));
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : 'Processing failed';
+        updateImageStatus(img.id, { status: 'Failed', error: message });
+        setProgress((p) => ({ ...p, failed: p.failed + 1, current: p.current + 1 }));
       }
     });
 
@@ -88,8 +93,8 @@ export default function ExportPanel() {
     URL.revokeObjectURL(url);
   };
 
-  const readyCount = images.filter(i => i.status === 'Ready' || i.status === 'Failed').length;
-  const completedCount = images.filter(i => i.status === 'Completed').length;
+  const actionCount = images.filter((img) => img.status !== 'Processing').length;
+  const completedCount = images.filter((img) => img.status === 'Completed').length;
 
   return (
     <div className="p-5 border-t border-gray-100 bg-white shadow-[0_-4px_10px_rgba(0,0,0,0.02)]">
@@ -157,13 +162,13 @@ export default function ExportPanel() {
         </div>
       ) : (
         <div className="flex space-x-3">
-          {readyCount > 0 && (
+          {actionCount > 0 && (
             <button
               onClick={processAll}
               className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 px-4 rounded-lg font-medium shadow-sm transition-colors flex items-center justify-center text-sm"
             >
               <PlayCircle className="w-4 h-4 mr-2" />
-              Process {readyCount} Image{readyCount !== 1 && 's'}
+              Clean {actionCount} Image{actionCount !== 1 && 's'}
             </button>
           )}
           

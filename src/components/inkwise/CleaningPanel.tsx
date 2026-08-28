@@ -1,12 +1,19 @@
 "use client";
 
 import { useInkWise } from '../../lib/store/InkWiseContext';
+import { InkWiseSettings } from '../../lib/image-processing/types';
 import { Settings, Sliders } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 export default function CleaningPanel() {
   const { settings, updateSettings, printSettings, updatePrintSettings, resetSettings } = useInkWise();
+  const presets: Array<{ id: InkWiseSettings['preset']; label: string; desc: string }> = [
+    { id: "Standard", label: "Standard", desc: "For most notes" },
+    { id: "Light", label: "Light", desc: "Preserve details" },
+    { id: "Strong", label: "Strong", desc: "Gray backgrounds" },
+    { id: "Custom", label: "Custom", desc: "Manual control" },
+  ];
 
   const handlePreset = (preset: "Standard" | "Light" | "Strong") => {
     if (preset === "Standard") updateSettings({ preset, whitePoint: 245, blackPoint: 0, gamma: 1 });
@@ -36,15 +43,10 @@ export default function CleaningPanel() {
         <div>
           <h4 className="text-sm font-medium text-gray-900 mb-3">Cleaning Mode</h4>
           <div className="grid grid-cols-2 gap-2">
-            {[
-              { id: "Standard", label: "Standard", desc: "For most notes" },
-              { id: "Light", label: "Light", desc: "Preserve details" },
-              { id: "Strong", label: "Strong", desc: "Gray backgrounds" },
-              { id: "Custom", label: "Custom", desc: "Manual control" },
-            ].map(p => (
+            {presets.map((p) => (
               <button
                 key={p.id}
-                onClick={() => p.id !== "Custom" ? handlePreset(p.id as any) : updateSettings({ preset: "Custom" })}
+                onClick={() => p.id !== "Custom" ? handlePreset(p.id) : updateSettings({ preset: "Custom" })}
                 className={twMerge(
                   clsx(
                     "flex flex-col items-start p-2 rounded border text-left transition-colors",

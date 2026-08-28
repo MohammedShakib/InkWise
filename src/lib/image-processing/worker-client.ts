@@ -1,12 +1,17 @@
 import { ProcessRequest, ProcessResponse } from './types';
 
+type PendingTask = {
+  resolve: (res: ProcessResponse) => void;
+  reject: (err: Error) => void;
+};
+
 export class WorkerPool {
   private workers: Worker[] = [];
   private idleWorkers: Worker[] = [];
   private taskQueue: Array<{
     request: ProcessRequest;
     resolve: (res: ProcessResponse) => void;
-    reject: (err: any) => void;
+    reject: (err: Error) => void;
   }> = [];
 
   constructor(size: number) {
@@ -26,10 +31,7 @@ export class WorkerPool {
     }
   }
 
-  private pendingTasks = new Map<string, {
-    resolve: (res: ProcessResponse) => void;
-    reject: (err: any) => void;
-  }>();
+  private pendingTasks = new Map<string, PendingTask>();
 
   private handleResponse(worker: Worker, response: ProcessResponse) {
     const task = this.pendingTasks.get(response.id);

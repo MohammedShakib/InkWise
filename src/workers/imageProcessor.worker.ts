@@ -44,10 +44,11 @@ self.onmessage = (e: MessageEvent<ProcessRequest>) => {
     
     // Transfer ownership of the buffer back to the main thread for performance
     self.postMessage(response, { transfer: [imageData.data.buffer] });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Unknown error during image processing';
     self.postMessage({
       id: e.data.id,
-      error: error.message || 'Unknown error during image processing',
+      error: message,
     });
   }
 };
