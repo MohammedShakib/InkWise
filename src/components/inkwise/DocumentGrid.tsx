@@ -43,19 +43,12 @@ function SortableImageCard({ img, removeImage }: { img: any; removeImage: (id: s
     <div
       ref={setNodeRef}
       style={style}
-      className={`group relative bg-white rounded-xl shadow-sm border border-slate-200 transition-all overflow-hidden flex flex-col ${
+      {...attributes} 
+      {...listeners}
+      className={`group relative bg-white rounded-xl shadow-sm border border-slate-200 transition-all overflow-hidden flex flex-col cursor-grab active:cursor-grabbing ${
         isDragging ? 'shadow-2xl scale-[1.05] border-blue-400 rotate-2' : 'hover:shadow-md hover:border-slate-300'
       }`}
     >
-      {/* Drag Handle Overlay */}
-      <div 
-        {...attributes} 
-        {...listeners}
-        className="absolute top-2 left-2 p-1.5 bg-white/90 backdrop-blur rounded-lg shadow-sm opacity-0 group-hover:opacity-100 transition-opacity z-20 cursor-grab active:cursor-grabbing text-slate-500 hover:text-slate-800 hover:bg-slate-50 outline-none"
-      >
-        <GripVertical className="w-4 h-4" />
-      </div>
-
       {/* Thumbnail Container */}
       <div className="relative aspect-[3/4] w-full bg-slate-50/50 flex items-center justify-center p-4">
         {img.thumbnailUrl ? (
@@ -74,6 +67,7 @@ function SortableImageCard({ img, removeImage }: { img: any; removeImage: (id: s
         {/* Overlay Delete Button */}
         <button
           onClick={(e) => { e.stopPropagation(); removeImage(img.id); }}
+          onPointerDown={(e) => e.stopPropagation()}
           className="absolute top-2 right-2 bg-white/90 backdrop-blur text-slate-500 hover:text-red-500 hover:bg-white p-2 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-opacity z-20 border border-slate-100"
           title="Remove image"
         >
