@@ -140,7 +140,7 @@ export default function DocumentGrid() {
   );
 
   return (
-    <div className="flex-1 overflow-y-auto bg-[#F8FAFC] p-6 md:p-10 relative">
+    <div className="flex-1 overflow-y-auto bg-[#F8FAFC] p-6 pt-16 md:p-10 md:pt-20 relative">
       <div className="max-w-[1400px] mx-auto pb-24">
         <DndContext 
           sensors={sensors}

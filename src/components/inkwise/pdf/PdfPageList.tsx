@@ -30,7 +30,7 @@ export default function PdfPageList({ pdfDoc, numPages, selectedPage, onSelectPa
 
   return (
     <div className="flex-1 flex flex-col h-full bg-slate-50 border-r border-slate-200">
-      <div className="p-4 border-b border-slate-200 bg-white">
+      <div className="p-4 pt-16 border-b border-slate-200 bg-white">
         <h3 className="font-semibold text-slate-800 text-[14px] truncate" title={pdfFile?.name}>{pdfFile?.name}</h3>
         <p className="text-[12px] text-slate-500 mt-0.5">{numPages} pages • {(pdfFile?.size! / (1024*1024)).toFixed(2)} MB</p>
       </div>
