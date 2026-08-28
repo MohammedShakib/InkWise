@@ -123,16 +123,19 @@ export default function CompareViewer() {
       </div>
 
       <div className="flex min-h-0 flex-1 items-center justify-center overflow-hidden p-6 md:p-10">
-        <div className="flex h-full w-full items-center justify-center rounded-[32px] border border-slate-200/80 bg-[radial-gradient(circle_at_top,#ffffff_0%,#f8fafc_45%,#edf2f7_100%)] p-6">
-          <div className="flex w-full max-w-[420px] items-center justify-center rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_18px_45px_rgba(15,23,42,0.10)] md:max-w-[460px]">
+        <div className="flex h-full w-full items-center justify-center rounded-[32px] border border-slate-200/80 bg-[linear-gradient(180deg,#f3f6fb_0%,#edf2f7_100%)] p-6">
+          <div className="flex w-full max-w-[280px] flex-col items-center justify-center rounded-[22px] border border-slate-200 bg-white p-4 shadow-[0_18px_45px_rgba(15,23,42,0.10)] md:max-w-[320px]">
+            <div className="mb-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+              Page Preview
+            </div>
             <Image
               src={displayUrl}
               alt={`${selectedImage.name} output preview`}
               width={selectedImage.width}
               height={selectedImage.height}
               unoptimized
-              sizes="(max-width: 768px) 70vw, 420px"
-              className="h-auto max-h-[calc(100vh-280px)] w-full rounded-[12px] object-contain"
+              sizes="(max-width: 768px) 55vw, 320px"
+              className="h-auto max-h-[420px] w-full rounded-[12px] object-contain"
             />
           </div>
         </div>
