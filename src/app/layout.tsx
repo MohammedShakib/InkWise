@@ -6,11 +6,8 @@ import ClientWrapper from "@/components/inkwise/ClientWrapper";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "InkWise - Pure White Pages",
+  title: "InkWise",
   description: "Clean AI-generated notes and document images for ink-friendly printing. Process entire batches directly in your browser with zero server uploads.",
-  icons: {
-    icon: "/icon.png",
-  },
 };
 
 export default function RootLayout({
@@ -20,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} font-sans antialiased bg-gray-100 text-gray-900 h-screen overflow-hidden flex flex-col`}>
+      <body className={`${inter.variable} flex min-h-screen flex-col overflow-hidden bg-slate-50 font-sans antialiased text-slate-950`}>
         <ClientWrapper>{children}</ClientWrapper>
       </body>
     </html>
