@@ -53,12 +53,12 @@ export default function PdfPreview({ pdfDoc, selectedPage }: { pdfDoc: pdfjsLib.
 
   const handleZoomIn = () => {
     setFitMode(false);
-    setZoomLevel(prev => Math.min(prev + 25, 300));
+    setZoomLevel(prev => Math.min(prev + 10, 300));
   };
 
   const handleZoomOut = () => {
     setFitMode(false);
-    setZoomLevel(prev => Math.max(prev - 25, 25));
+    setZoomLevel(prev => Math.max(prev - 10, 10));
   };
 
   const handleFit = () => {
@@ -91,14 +91,11 @@ export default function PdfPreview({ pdfDoc, selectedPage }: { pdfDoc: pdfjsLib.
       </div>
       
       <div 
-        className="flex flex-col items-center justify-center transition-all duration-200 origin-top"
-        style={{
-          width: fitMode ? '100%' : `${zoomLevel}%`,
-          maxWidth: fitMode ? '800px' : 'none'
-        }}
+        className={`flex flex-col items-center justify-center transition-all duration-200 origin-top ${fitMode ? 'h-full w-full' : ''}`}
+        style={fitMode ? {} : { width: `${zoomLevel}%` }}
       >
         {!originalUrl ? (
-          <div className="flex flex-col items-center justify-center p-20 text-slate-400">
+          <div className="flex flex-col items-center justify-center p-20 text-slate-400 h-full">
             <svg className="animate-spin h-8 w-8 text-blue-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -109,7 +106,11 @@ export default function PdfPreview({ pdfDoc, selectedPage }: { pdfDoc: pdfjsLib.
           <img 
             src={originalUrl} 
             alt={`Page ${selectedPage}`} 
-            className="w-full h-auto bg-white shadow-xl border border-slate-200" 
+            className={`bg-white shadow-xl border border-slate-200 ${
+              fitMode 
+                ? 'max-w-full max-h-[calc(100vh-140px)] object-contain' 
+                : 'w-full h-auto'
+            }`} 
           />
         )}
       </div>
